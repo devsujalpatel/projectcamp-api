@@ -20,12 +20,14 @@ app.use(
 );
 
 // routes
-import healthCheckRouter from './routes/healcheck.route';
+import healthCheckRouter from '@/routes/healcheck.route';
+import authRoutes from '@/routes/user.route';
 
 app.get('/', (req, res) => {
   res.send('Hello from project camp');
 });
 
-app.use("/api/v1/", healthCheckRouter);
+app.use('/api/v1/', healthCheckRouter);
+app.use('/api/v1/auth', authRoutes);
 
 export default app;
