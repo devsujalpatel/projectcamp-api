@@ -19,8 +19,13 @@ app.use(
   }),
 );
 
+// routes
+import healthCheckRouter from './routes/healcheck.route';
+
 app.get('/', (req, res) => {
   res.send('Hello from project camp');
 });
+
+app.use("/api/v1/", healthCheckRouter);
 
 export default app;
