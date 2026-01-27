@@ -1,6 +1,18 @@
 {
   "compilerOptions": {
     // Environment setup & latest features
+
+    "rootDir": "src",
+    "baseUrl": "./",
+    "outDir": "dist",
+    "removeComments": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "typeRoots": ["./src/types"],
+
     "lib": ["ESNext"],
     "target": "ESNext",
     "module": "Preserve",
@@ -25,5 +37,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
