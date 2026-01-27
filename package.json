@@ -2,11 +2,15 @@
   "name": "projectcamp-api",
   "module": "src/index.ts",
   "scripts": {
-    "dev": "bun --bun --watch src/index.ts"
+    "dev": "bun --bun --watch src/index.ts",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "prettier": "^3.8.1"
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.10",
+    "prettier": "^3.8.1",
+    "tsc": "^2.0.4"
   },
   "peerDependencies": {
     "typescript": "^5"
