@@ -1,12 +1,13 @@
 {
   "name": "projectcamp-api",
-  "module": "src/index.ts",
+  "module": "src/server.ts",
   "scripts": {
-    "dev": "bun --bun --watch src/index.ts",
+    "dev": "bun --bun --watch src/server.ts",
     "build": "tsc"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^25.0.10",
     "prettier": "^3.8.1",
@@ -18,6 +19,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "mongoose": "^9.1.5"
