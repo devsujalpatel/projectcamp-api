@@ -1,8 +1,9 @@
 import { ApiResponse } from "@/utils/api-response";
+import { asyncHandler } from "@/utils/async-handler";
 import type { Request, Response, NextFunction } from "express";
 
-const healthCheck = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+export const healthCheck = asyncHandler(
+  async (req: Request, res: Response) => {
     res.status(200).json(
       new ApiResponse({
         statusCode: 200,
@@ -10,9 +11,5 @@ const healthCheck = async (req: Request, res: Response, next: NextFunction) => {
         message: "Server is running",
       }),
     );
-  } catch (error) {
-    next(error);
-  }
-};
-
-export { healthCheck };
+  },
+);
