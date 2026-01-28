@@ -1,8 +1,7 @@
-import dotenv from 'dotenv';
-
+import "dotenv/config";
 // import type ms from 'ms';
 
-dotenv.config();
+
 
 const config = {
   PORT: process.env.PORT || 8000,
