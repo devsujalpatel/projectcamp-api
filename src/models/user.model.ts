@@ -1,4 +1,5 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, type HydratedDocument } from "mongoose";
+import bcrypt from "bcrypt";
 
 export interface IUser {
   avatar: {
@@ -80,4 +81,9 @@ const userSchema = new Schema<IUser>(
   { timestamps: true },
 );
 
-export const User = mongoose.model("User", userSchema);
+userSchema.pre("save", async function (this: HydratedDocument<IUser>) {
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+export default mongoose.model<IUser>("User", userSchema);
