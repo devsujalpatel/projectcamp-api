@@ -2,6 +2,7 @@ import mongoose, { Schema, type HydratedDocument } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "@/config";
+import crypto from "crypto";
 
 export interface IUser {
   avatar: {
@@ -101,11 +102,21 @@ userSchema.methods.generateAccessToken = function () {
 };
 
 userSchema.methods.generateRefreshToken = function () {
-  return jwt.sign(
-    { _id: this._id},
-    config.JWT_REFRESH_SECRET,
-    { expiresIn: config.JWT_REFRESH_EXPIRES_IN },
-  );
+  return jwt.sign({ _id: this._id }, config.JWT_REFRESH_SECRET, {
+    expiresIn: config.JWT_REFRESH_EXPIRES_IN,
+  });
+};
+
+userSchema.methods.generateTemporaryToken = function () {
+  const unHashedToken = crypto.randomBytes(20).toString("hex");
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(unHashedToken)
+    .digest("hex");
+
+  const tokenExpiry = Date.now() + 20 * 60 * 1000; // 20 minutes from now
+
+  return { unHashedToken, hashedToken, tokenExpiry };
 };
 
 export default mongoose.model<IUser>("User", userSchema);
