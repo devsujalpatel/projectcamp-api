@@ -13,16 +13,16 @@ import {
 } from "@/lib/jwt";
 import { emailVerificationMailgenContent, sendEmail } from "@/utils/mailer";
 
-type UserData = Pick<IUser, "username" | "email" | "password">;
+type UserData = Pick<IUser, "fullName" | "username" | "email" | "password">;
 
 export const registerUser = asyncHandler(
   async (req: Request, res: Response) => {
-    const { email, username, password } = req.body as UserData;
+    const { fullName, email, username, password } = req.body as UserData;
 
-    if (!email || !username || !password) {
+    if (!email || !username || !password || !fullName) {
       throw new ApiError({
         statusCode: 400,
-        message: "Email, username and password are required",
+        message: "Email, username, fullName and password are required",
       });
     }
 
@@ -38,6 +38,7 @@ export const registerUser = asyncHandler(
     }
 
     const newUser = await User.create({
+      fullName,
       username,
       email,
       password,
