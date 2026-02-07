@@ -19,8 +19,11 @@ app.use(
   }),
 );
 
+app.use(helmet());
+
 // import routes
-import healthCheckRouter from "./routes/healthcheck.route";
+import healthCheckRouter from "./routes/v1/healthcheck.route";
+import helmet from "helmet";
 
 // use routes
 app.use("/api/v1/healthcheck", healthCheckRouter);

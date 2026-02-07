@@ -9,6 +9,7 @@
         "cors": "^2.8.6",
         "dotenv": "^17.2.3",
         "express": "^5.2.1",
+        "helmet": "^8.1.0",
         "jsonwebtoken": "^9.0.3",
         "mailgen": "^2.0.32",
         "mongodb": "^7.0.0",
@@ -214,6 +215,8 @@
     "hasown": ["hasown@2.0.2", "", { "dependencies": { "function-bind": "^1.1.2" } }, "sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ=="],
 
     "he": ["he@1.2.0", "", { "bin": { "he": "bin/he" } }, "sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw=="],
+
+    "helmet": ["helmet@8.1.0", "", {}, "sha512-jOiHyAZsmnr8LqoPGmCjYAaiuWwjAPLgY8ZX2XrmHawt99/u1y6RgrZMTeoPfpUbV96HOalYgz1qzkRbw54Pmg=="],
 
     "htmlparser2": ["htmlparser2@6.1.0", "", { "dependencies": { "domelementtype": "^2.0.1", "domhandler": "^4.0.0", "domutils": "^2.5.2", "entities": "^2.0.0" } }, "sha512-gyyPk6rgonLFEDGoeRgQNaEUvdJ4ktTmmUh/h2t7s+M8oPpIPxgNACWa+6ESR57kXstwqPiCut0V8NRpcwgU7A=="],
 

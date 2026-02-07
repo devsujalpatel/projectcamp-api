@@ -3,10 +3,9 @@ import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import config from "@/config";
 
-
 export const emailVerificationMailgenContent = (
   username: string,
-  verificationUrl: string
+  verificationUrl: string,
 ): Mailgen.Content => ({
   body: {
     name: username,
@@ -24,10 +23,9 @@ export const emailVerificationMailgenContent = (
   },
 });
 
-
 export const forgotPasswordMailgenContent = (
   username: string,
-  passwordResetUrl: string
+  passwordResetUrl: string,
 ): Mailgen.Content => ({
   body: {
     name: username,
@@ -40,11 +38,9 @@ export const forgotPasswordMailgenContent = (
         link: passwordResetUrl,
       },
     },
-    outro:
-      "If you didn't request this, ignore this email. No stress.",
+    outro: "If you didn't request this, ignore this email. No stress.",
   },
 });
-
 
 const smtpOptions: SMTPTransport.Options = {
   host: config.MAILTRAP_SMTP_HOST,
@@ -58,12 +54,12 @@ const smtpOptions: SMTPTransport.Options = {
 const transporter = nodemailer.createTransport(smtpOptions);
 
 const mailGenerator = new Mailgen({
-    theme: "default",
-    product: {
-      name: "Task Manager",
-      link: "https://sujalpatel.tech/"
-    }
-})
+  theme: "default",
+  product: {
+    name: "Task Manager",
+    link: "https://sujalpatel.tech/",
+  },
+});
 
 interface SendMailOptions {
   to: string;
@@ -71,11 +67,10 @@ interface SendMailOptions {
   mailgenContent: Mailgen.Content;
 }
 
-
-export const sendMail = async ({
+export const sendEmail = async ({
   to,
   subject,
-  mailgenContent
+  mailgenContent,
 }: SendMailOptions) => {
   const emailTextual: string = mailGenerator.generatePlaintext(mailgenContent);
   const emailHtml: string = mailGenerator.generate(mailgenContent);
@@ -86,12 +81,14 @@ export const sendMail = async ({
     subject: subject,
     text: emailTextual,
     html: emailHtml,
-  }
+  };
 
   try {
-    await transporter.sendMail(mail)
+    await transporter.sendMail(mail);
   } catch (error) {
-    console.error(`Email Service failed silently. Make sure that you have provided the MAILTRAP Credentials in the .env file`)
-    console.error("Error:", error)
+    console.error(
+      `Email Service failed silently. Make sure that you have provided the MAILTRAP Credentials in the .env file`,
+    );
+    console.error("Error:", error);
   }
-}
+};

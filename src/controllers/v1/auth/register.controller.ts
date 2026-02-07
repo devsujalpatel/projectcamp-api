@@ -1,0 +1,87 @@
+import { ApiResponse } from "@/utils/api-response";
+import { ApiError } from "@/utils/api-error";
+import { asyncHandler } from "@/utils/async-handler";
+import User from "@/models/v1/user.model";
+
+// Types
+import type { Request, Response } from "express";
+import type { IUser } from "@/models/v1/user.model";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  generateTemporaryToken,
+} from "@/lib/jwt";
+import { emailVerificationMailgenContent, sendEmail } from "@/utils/mailer";
+
+type UserData = Pick<IUser, "username" | "email" | "password">;
+
+export const registerUser = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { email, username, password } = req.body as UserData;
+
+    if (!email || !username || !password) {
+      throw new ApiError({
+        statusCode: 400,
+        message: "Email, username and password are required",
+      });
+    }
+
+    const existingUser = await User.findOne({
+      $or: [{ username }, { email }],
+    });
+
+    if (existingUser) {
+      throw new ApiError({
+        statusCode: 409,
+        message: "User with email or username already exists",
+      });
+    }
+
+    const newUser = await User.create({
+      username,
+      email,
+      password,
+      isEmailVerified: false,
+    });
+
+    const { unHashedToken, hashedToken, tokenExpiry } =
+      generateTemporaryToken();
+
+    const refreshToken = generateRefreshToken(newUser._id);
+
+    newUser.refreshToken = refreshToken;
+
+    newUser.emailVerificationToken = hashedToken;
+    newUser.emailVerificationExpiry = tokenExpiry;
+    await newUser.save({ validateBeforeSave: false });
+
+    await sendEmail({
+      to: newUser.email,
+      subject: "Please verify your email",
+      mailgenContent: emailVerificationMailgenContent(
+        newUser.username,
+        `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unHashedToken}`,
+      ),
+    });
+
+    const createdUser = await User.findById(newUser._id).select(
+      "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
+    );
+
+    if (!createdUser) {
+      throw new ApiError({
+        statusCode: 500,
+        message: "Something went wrong while registring the user",
+      });
+    }
+
+    return res.status(201).json(
+      new ApiResponse({
+        statusCode: 200,
+        data: { user: createdUser },
+        message:
+          "User registered successfully and verification email has been sent on your email",
+      }),
+    );
+  },
+);

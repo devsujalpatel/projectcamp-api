@@ -1,10 +1,9 @@
-import mongoose, { Schema, type HydratedDocument } from "mongoose";
+import mongoose, { Schema, Types, type HydratedDocument } from "mongoose";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import config from "@/config";
-import crypto from "crypto";
+
 
 export interface IUser {
+  _id: Types.ObjectId;
   avatar: {
     url?: string;
     localPath?: string;
@@ -89,34 +88,9 @@ userSchema.pre("save", async function (this: HydratedDocument<IUser>) {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-userSchema.methods.isPasswordCorrect = async function (password: string) {
+
+userSchema.methods.isPasswwordCorrect = async function (password: string) {
   return await bcrypt.compare(password, this.password);
-};
-
-userSchema.methods.generateAccessToken = function () {
-  return jwt.sign(
-    { _id: this._id, email: this.email, username: this.username },
-    config.JWT_ACCESS_SECRET,
-    { expiresIn: config.JWT_ACCESS_EXPIRES_IN },
-  );
-};
-
-userSchema.methods.generateRefreshToken = function () {
-  return jwt.sign({ _id: this._id }, config.JWT_REFRESH_SECRET, {
-    expiresIn: config.JWT_REFRESH_EXPIRES_IN,
-  });
-};
-
-userSchema.methods.generateTemporaryToken = function () {
-  const unHashedToken = crypto.randomBytes(20).toString("hex");
-  const hashedToken = crypto
-    .createHash("sha256")
-    .update(unHashedToken)
-    .digest("hex");
-
-  const tokenExpiry = Date.now() + 20 * 60 * 1000; // 20 minutes from now
-
-  return { unHashedToken, hashedToken, tokenExpiry };
 };
 
 export default mongoose.model<IUser>("User", userSchema);
