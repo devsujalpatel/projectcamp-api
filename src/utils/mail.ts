@@ -1,6 +1,6 @@
 import Mailgen from "mailgen";
 
-const emailVerificationMailgenContent = (
+export const emailVerificationMailgenContent = (
   username: string,
   verificationUrl: string,
 ) => {
@@ -22,7 +22,9 @@ const emailVerificationMailgenContent = (
     },
   };
 };
-const forgotPasswordMailgenContent = (
+
+
+export const forgotPasswordMailgenContent = (
   username: string,
   passwordResetUrl: string,
 ) => {
@@ -44,3 +46,5 @@ const forgotPasswordMailgenContent = (
     },
   };
 };
+
+
