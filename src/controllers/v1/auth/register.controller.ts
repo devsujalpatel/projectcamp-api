@@ -6,10 +6,7 @@ import User from "@/models/v1/user.model";
 // Types
 import type { Request, Response } from "express";
 import type { IUser } from "@/types/user.types";
-import {
-  generateRefreshToken,
-  generateTemporaryToken,
-} from "@/lib/jwt";
+import { generateRefreshToken, generateTemporaryToken } from "@/lib/jwt";
 import { emailVerificationMailgenContent, sendEmail } from "@/utils/mailer";
 
 type UserData = Pick<IUser, "fullName" | "username" | "email" | "password">;
@@ -75,10 +72,27 @@ export const registerUser = asyncHandler(
       });
     }
 
+    type UserResponse = Omit<
+      IUser,
+      | "password"
+      | "refreshToken"
+      | "emailVerificationToken"
+      | "emailVerificationExpiry"
+    >;
+
+    const userResponse: UserResponse = {
+      _id: createdUser._id,
+      fullName: createdUser.fullName,
+      email: createdUser.email,
+      username: createdUser.username,
+      avatar: createdUser.avatar,
+      isEmailVerified: createdUser.isEmailVerified,
+    };
+
     return res.status(201).json(
       new ApiResponse({
         statusCode: 200,
-        data: { user: createdUser },
+        data: userResponse,
         message:
           "User registered successfully and verification email has been sent on your email",
       }),

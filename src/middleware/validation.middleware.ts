@@ -1,37 +1,27 @@
 import { ApiError } from "@/utils/api-error";
 import type { Request, Response, NextFunction } from "express";
-import { z, ZodError } from "zod";
+import { z } from "zod";
 
-export function validateData(schema: z.ZodTypeAny) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    try {
-      schema.parse(req.body);
-      next();
-    } catch (error) {
-      if (error instanceof ZodError) {
-        const errorMessages = error.issues.map((issue) => ({
-          field: issue.path.join("."),
-          message: issue.message,
-        }));
+export function validateData<T extends z.ZodTypeAny>(schema: T) {
+  return (req: Request, _res: Response, next: NextFunction) => {
+    const result = schema.safeParse(req.body);
 
-        // return res.status(400).json({
-        //   error: "Invalid request body",
-        //   details: errorMessages,
-        // });
-        return new ApiError({
+    if (!result.success) {
+      const errorMessages = result.error.issues.map((issue) => ({
+        field: issue.path.join("."),
+        message: issue.message,
+      }));
+
+      return next(
+        new ApiError({
           statusCode: 400,
           message: "Invalid request body",
           errors: errorMessages,
-        });
-      }
-
-      return new ApiError({
-        statusCode: 500,
-        message: "Internal Server Error",
-      });
-      // return res.status(500).json({
-      //   error: "Internal Server Error",
-      // });
+        }),
+      );
     }
+
+    req.body = result.data;
+    next();
   };
 }
