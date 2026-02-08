@@ -1,16 +1,16 @@
-class ApiResponse {
+class ApiResponse<T> {
   statusCode: number;
-  data: any;
+  data: T;
   message: string;
   success: boolean;
 
   constructor({
     statusCode,
     data,
-    message = 'success',
+    message = "success",
   }: {
     statusCode: number;
-    data: any;
+    data: T;
     message?: string;
   }) {
     this.statusCode = statusCode;

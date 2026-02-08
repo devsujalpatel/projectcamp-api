@@ -21,7 +21,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
   const existingUser = await User.findOne({
     $or: [{ email }].filter(Boolean),
-  }).select("username password email");
+  }).select("username password email fullName");
 
   if (!existingUser) {
     throw new ApiError({
@@ -39,7 +39,19 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     });
   }
 
+  type UserResponse = Pick<IUser, "username" | "email" | "fullName">;
 
+  const userResponse: UserResponse = {
+    username: existingUser.username,
+    email: existingUser.email,
+    fullName: existingUser.fullName,
+  };
 
-  
+  return res.status(200).json(
+    new ApiResponse<UserResponse>({
+      statusCode: 200,
+      message: "User logged in successfully",
+      data: userResponse,
+    }),
+  );
 });

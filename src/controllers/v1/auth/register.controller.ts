@@ -5,9 +5,8 @@ import User from "@/models/v1/user.model";
 
 // Types
 import type { Request, Response } from "express";
-import type { IUser } from "@/models/v1/user.model";
+import type { IUser } from "@/types/user.types";
 import {
-  generateAccessToken,
   generateRefreshToken,
   generateTemporaryToken,
 } from "@/lib/jwt";
