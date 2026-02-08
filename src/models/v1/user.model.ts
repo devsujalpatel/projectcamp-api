@@ -1,7 +1,6 @@
 import mongoose, { Schema, Types, type HydratedDocument } from "mongoose";
 import bcrypt from "bcrypt";
 
-
 export interface IUser {
   _id: Types.ObjectId;
   avatar: {
@@ -87,7 +86,6 @@ userSchema.pre("save", async function (this: HydratedDocument<IUser>) {
   if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 10);
 });
-
 
 userSchema.methods.isPasswwordCorrect = async function (password: string) {
   return await bcrypt.compare(password, this.password);
