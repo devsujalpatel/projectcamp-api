@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import helmet from "helmet";
+import { errorHandler } from "./middleware/error.middleware";
 
 const app = express();
 
@@ -33,5 +34,6 @@ app.use("/api/v1/auth", authRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to projectcamp");
 });
+app.use(errorHandler);
 
 export default app;
