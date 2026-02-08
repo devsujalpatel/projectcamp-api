@@ -5,14 +5,14 @@ import User from "@/models/v1/user.model";
 
 // Types
 import type { Request, Response } from "express";
-import type { IUser } from "@/models/v1/user.model";
+import type { IUser } from "@/types/user.types";
 
 type UserData = Pick<IUser, "email" | "password">;
 
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body as UserData;
 
-  if (!email || !email) {
+  if (!email || !password) {
     throw new ApiError({
       statusCode: 400,
       message: "Email or username and password are required",
@@ -21,9 +21,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
   const existingUser = await User.findOne({
     $or: [{ email }].filter(Boolean),
-  }).select(
-    "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
-  );
+  }).select("username password email");
 
   if (!existingUser) {
     throw new ApiError({
@@ -32,7 +30,16 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     });
   }
 
-  return res.status(200).json({
-    existingUser,
-  });
+  const isPasswordValid = await existingUser.isPasswordCorrect(password);
+
+  if (!isPasswordValid) {
+    throw new ApiError({
+      statusCode: 401,
+      message: "Incorrect Password",
+    });
+  }
+
+
+
+  
 });

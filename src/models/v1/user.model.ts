@@ -1,25 +1,11 @@
 import mongoose, { Schema, Types, type HydratedDocument } from "mongoose";
 import bcrypt from "bcrypt";
+import type { IUser, IUserMethods } from "@/types/user.types";
+import type { Model } from "mongoose";
 
-export interface IUser {
-  _id: Types.ObjectId;
-  avatar: {
-    url?: string;
-    localPath?: string;
-  };
-  username: string;
-  email: string;
-  fullName: string;
-  password: string;
-  isEmailVerified?: boolean;
-  refreshToken?: string;
-  forgotPasswordToken?: string;
-  forgotPasswordExpiry?: Date;
-  emailVerificationToken?: string;
-  emailVerificationExpiry?: Date;
-}
+type UserDocument = HydratedDocument<IUser, IUserMethods>;
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUser, {}, IUserMethods>(
   {
     avatar: {
       type: {
@@ -87,8 +73,14 @@ userSchema.pre("save", async function (this: HydratedDocument<IUser>) {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-userSchema.methods.isPasswwordCorrect = async function (password: string) {
+userSchema.methods.isPasswordCorrect = async function (
+  this: UserDocument,
+  password: string,
+) {
   return await bcrypt.compare(password, this.password);
 };
 
-export default mongoose.model<IUser>("User", userSchema);
+export default mongoose.model<IUser, Model<IUser, {}, IUserMethods>>(
+  "User",
+  userSchema,
+);
