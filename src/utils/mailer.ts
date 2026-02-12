@@ -76,7 +76,7 @@ export const sendEmail = async ({
   const emailHtml: string = mailGenerator.generate(mailgenContent);
 
   const mail = {
-    from: "mail.sujalpatel@test.com",
+    from: config.EMAIL_SENDER,
     to,
     subject: subject,
     text: emailTextual,

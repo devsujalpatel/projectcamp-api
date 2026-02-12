@@ -44,9 +44,9 @@ export const registerUser = asyncHandler(
     const { unHashedToken, hashedToken, tokenExpiry } =
       generateTemporaryToken();
 
-    const refreshToken = generateRefreshToken(newUser._id);
+    // const refreshToken = generateRefreshToken(newUser._id);
 
-    newUser.refreshToken = refreshToken;
+    // newUser.refreshToken = refreshToken;
 
     newUser.emailVerificationToken = hashedToken;
     newUser.emailVerificationExpiry = tokenExpiry;
@@ -57,12 +57,12 @@ export const registerUser = asyncHandler(
       subject: "Please verify your email",
       mailgenContent: emailVerificationMailgenContent(
         newUser.username,
-        `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unHashedToken}`,
+        `${req.protocol}://${req.get("host")}/api/v1/auth/verify-email/${unHashedToken}`,
       ),
     });
 
     const createdUser = await User.findById(newUser._id).select(
-      "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
+      "-password -emailVerificationToken -emailVerificationExpiry",
     );
 
     if (!createdUser) {
@@ -75,7 +75,7 @@ export const registerUser = asyncHandler(
     type UserResponse = Omit<
       IUser,
       | "password"
-      | "refreshToken"
+      // | "refreshToken"
       | "emailVerificationToken"
       | "emailVerificationExpiry"
     >;
@@ -91,7 +91,7 @@ export const registerUser = asyncHandler(
 
     return res.status(201).json(
       new ApiResponse({
-        statusCode: 200,
+        statusCode: 201,
         data: userResponse,
         message:
           "User registered successfully and verification email has been sent on your email",

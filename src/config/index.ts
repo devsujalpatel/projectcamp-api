@@ -15,6 +15,7 @@ const config = {
   MAILTRAP_SMTP_PORT: process.env.MAILTRAP_SMTP_PORT,
   MAILTRAP_SMTP_USER: process.env.MAILTRAP_SMTP_USER as string,
   MAILTRAP_SMTP_PASS: process.env.MAILTRAP_SMTP_PASS as string,
+  EMAIL_SENDER: process.env.EMAIL_SENDER as string,
 };
 
 export default config;
