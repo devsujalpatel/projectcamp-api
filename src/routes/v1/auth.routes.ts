@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { registerUser } from "@/controllers/v1/auth/register.controller";
-import { validateData } from "@/middleware/validation.middleware";
+import { registerUser } from "@/controllers/v1/auth/register.controller.js";
+import { validateData } from "@/middleware/validation.middleware.js";
 import {
   userLoginSchema,
   userRegistrationSchema,
-} from "@/validators/user.schema.zod";
-import { loginUser } from "@/controllers/v1/auth/login.controller";
-import { verifyUser } from "@/controllers/v1/auth/verify.controller";
+} from "@/validators/user.schema.zod.js";
+import { loginUser } from "@/controllers/v1/auth/login.controller.js";
+import { verifyUser } from "@/controllers/v1/auth/verify.controller.js";
 
 const router = Router();
 

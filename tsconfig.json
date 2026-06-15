@@ -1,43 +1,39 @@
 {
   "compilerOptions": {
-    // Environment setup & latest features
-
-    "rootDir": "src",
-    "baseUrl": "./",
-    "outDir": "dist",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "removeComments": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    
+    /* Fixed path alias without baseUrl */
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
     "typeRoots": ["./src/types"],
 
     "lib": ["ESNext"],
-    "target": "ESNext",
-    "module": "Preserve",
+    "target": "ES2022",                /* Modern Node.js engine target */
+    "module": "NodeNext",              /* Standard for modern Node.js backends */
     "moduleDetection": "force",
-    "jsx": "react-jsx",
     "allowJs": true,
 
-    // Bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
+    /* Native Node.js backend configuration */
+    "moduleResolution": "NodeNext",    /* Teaches TS how Node actually resolves files */
+    "noEmit": false,                   /* CRUCIAL: Instructs tsc to actually output files */
 
-    // Best practices
+    /* Best practices */
     "strict": true,
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
-    // Some stricter flags (disabled by default)
+    /* Strictness flags */
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

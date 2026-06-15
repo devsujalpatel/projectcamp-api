@@ -2,7 +2,7 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import helmet from "helmet";
-import { errorHandler } from "./middleware/error.middleware";
+import { errorHandler } from "./middleware/error.middleware.js";
 import cookiePrser from "cookie-parser";
 
 const app = express();

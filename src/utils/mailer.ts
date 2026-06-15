@@ -1,7 +1,7 @@
 import Mailgen from "mailgen";
 import nodemailer from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
-import config from "@/config";
+import SMTPTransport from "nodemailer/lib/smtp-transport/index.js";
+import config from "@/config/index.js";
 
 export const emailVerificationMailgenContent = (
   username: string,
