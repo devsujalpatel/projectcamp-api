@@ -1,13 +1,13 @@
-import { ApiResponse } from "@/utils/api-response.js";
-import { ApiError } from "@/utils/api-error.js";
-import { asyncHandler } from "@/utils/async-handler.js";
-import User from "@/models/v1/user.model.js";
+import { ApiResponse } from "#/utils/api-response.js";
+import { ApiError } from "#/utils/api-error.js";
+import { asyncHandler } from "#/utils/async-handler.js";
+import User from "#/models/v1/user.model.js";
 
 // Types
 import type { Request, Response } from "express";
-import type { IUser } from "@/types/user.types.js";
-import { generateRefreshToken, generateTemporaryToken } from "@/lib/jwt.js";
-import { emailVerificationMailgenContent, sendEmail } from "@/utils/mailer.js";
+import type { IUser } from "#/types/user.types.js";
+import { generateRefreshToken, generateTemporaryToken } from "#/lib/jwt.js";
+import { emailVerificationMailgenContent, sendEmail } from "#/utils/mailer.js";
 
 type UserData = Pick<IUser, "fullName" | "username" | "email" | "password">;
 

@@ -8,7 +8,7 @@
     
     /* Fixed path alias without baseUrl */
     "paths": {
-      "@/*": ["./src/*"]
+      "#/*": ["./src/*"]
     },
     "typeRoots": ["./src/types"],
 

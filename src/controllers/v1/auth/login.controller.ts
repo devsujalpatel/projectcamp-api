@@ -1,12 +1,12 @@
-import { ApiResponse } from "@/utils/api-response";
-import { ApiError } from "@/utils/api-error";
-import { asyncHandler } from "@/utils/async-handler";
-import User from "@/models/v1/user.model";
+import { ApiResponse } from "#/utils/api-response.js";
+import { ApiError } from "#/utils/api-error.js";
+import { asyncHandler } from "#/utils/async-handler.js";
+import User from "#/models/v1/user.model.js";
 
 // Types
 import type { Request, Response } from "express";
-import type { IUser } from "@/types/user.types";
-import { generateAccessToken, generateRefreshToken } from "@/lib/jwt";
+import type { IUser } from "#/types/user.types.js";
+import { generateAccessToken, generateRefreshToken } from "#/lib/jwt.js";
 
 type ReqBodyData = Pick<IUser, "email" | "password">;
 

@@ -1,9 +1,11 @@
 {
   "name": "projectcamp-api",
-  "module": "src/server.ts",
+  "imports": {
+    "#/*": "./dist/*"
+  },
   "main": "dist/server.js",
   "scripts": {
-    "dev": "node --watch src/server.ts",
+    "dev": "bun --bun --watch src/server.ts",
     "build": "rimraf dist && tsc",
     "start": "node dist/server.js"
   },
@@ -16,7 +18,6 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.10",
     "@types/nodemailer": "^7.0.9",
-    "ms": "^2.1.3",
     "prettier": "^3.8.1",
     "rimraf": "^6.1.3",
     "tsc-alias": "^1.8.16",

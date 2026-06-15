@@ -1,6 +1,6 @@
 import mongoose, { Schema, Types, type HydratedDocument } from "mongoose";
 import bcrypt from "bcrypt";
-import type { IUser, IUserMethods } from "@/types/user.types.js";
+import type { IUser, IUserMethods } from "#/types/user.types.js";
 import type { Model } from "mongoose";
 
 type UserDocument = HydratedDocument<IUser, IUserMethods>;
